@@ -6,6 +6,11 @@ display: none;
 
 }
 
+.mobile-navbar{
+
+    visibility: visible !important;
+    
+    }
 
 }
 
@@ -13,12 +18,70 @@ display: none;
 
 
 
+.mobile-navbar{
+
+visibility: hidden;
+
+}
+
+
 .mobile-navbar ul{
-
-
-display: flex;
+position: relative;
+padding: 20px;
+display: flex !important;
 justify-content: space-between;
 color: white;
+
+list-style: none;
+
+}
+
+.mobile-navbar ul li:first-child{
+text-align: center;
+justify-content: center;
+align-items: center;
+display: flex;
+border-radius: 50px;
+background-color: gray;
+}
+
+
+.mobile-navbar ul li:first-child a{
+
+color: white;
+text-decoration: none;
+
+}
+
+.mobile-navbar ul li:last-child {
+
+    background-color: gray;
+    border-radius: 50px;
+    padding: 10px;
+
+}
+
+
+.mobile-navbar ul li:last-child input{
+
+
+width: 0;
+border: 0;
+
+
+
+}
+
+#input{
+    transition: 0.6 ease all;
+}
+
+#input:hover , .mobile-navbar ul li:last-child input:hover{
+    
+    transition: 0.6 ease all;
+    width: 200px;
+
+
 
 }
 
