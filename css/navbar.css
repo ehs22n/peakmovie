@@ -62,26 +62,53 @@ text-decoration: none;
 }
 
 
-.mobile-navbar ul li:last-child input{
 
-
-width: 0;
-border: 0;
-
-
-
+.search-overlay {
+    position: fixed;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    transition: all 0.5s ease-in-out;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 20%;
 }
 
-#input{
-    transition: 0.6 ease all;
+.search-overlay.active {
+    top: 0;
 }
 
-#input:hover , .mobile-navbar ul li:last-child input:hover{
-    
-    transition: 0.6 ease all;
-    width: 200px;
-
-
-
+.search-container {
+    width: 80%;
+    max-width: 600px;
+    position: relative;
 }
 
+.search-input {
+    width: 100%;
+    padding: 20px;
+    font-size: 1.2rem;
+    border-radius: 30px;
+    border: none;
+    outline: none;
+    direction: rtl;
+}
+
+.close-btn {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #333;
+    font-size: 2rem;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.close-btn:hover {
+    color: #666;
+}
