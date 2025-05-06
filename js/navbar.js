@@ -10,11 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     searchIcon.addEventListener('click', function(e) {
         e.preventDefault();
         liAnimation.classList.add('li');
-        if (liAnimation.classList.contains("backLi")){
-            liAnimation.remove("backLi")
-            
-
-        }
+        liAnimation.classList.remove('backLi');
         searchOverlay.classList.add('active');
         searchInput.focus();
     });
