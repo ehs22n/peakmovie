@@ -4,16 +4,25 @@ document.addEventListener('DOMContentLoaded', function() {
     const searchOverlay = document.querySelector('.search-overlay');
     const closeBtn = document.querySelector('.close-btn');
     const searchInput = document.querySelector('.search-input');
+    const liAnimation = document.querySelector('#li');
 
   
     searchIcon.addEventListener('click', function(e) {
         e.preventDefault();
+        liAnimation.classList.add('li');
+        if (liAnimation.classList.contains("backLi")){
+            liAnimation.remove("backLi")
+            
+
+        }
         searchOverlay.classList.add('active');
         searchInput.focus();
     });
 
    
     closeBtn.addEventListener('click', function() {
+        liAnimation.classList.remove('li');
+        liAnimation.classList.add('backLi');
         searchOverlay.classList.remove('active');
     });
 
