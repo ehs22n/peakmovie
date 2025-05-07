@@ -147,3 +147,18 @@ height: 50px;
 border-top-right-radius: 20px;
 border-top-left-radius: 20px;
 }
+
+
+.mobile-optoins-ul{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-left: 15px;
+    margin-right: 15px;
+    align-items: center;
+    text-align: center;
+    
+    list-style: none;
+    text-decoration: none;
+}
