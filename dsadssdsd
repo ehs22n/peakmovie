@@ -1,0 +1,95 @@
+[33mcommit 4a0a9f2136711b626b2ce119c4b6d8659b9cda12[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m
+Author: ehs22n <ehs22nn@gmail.com>
+Date:   Wed May 7 19:10:50 2025 +0330
+
+    r
+
+[33mcommit 7f7b54cec62bbbb1e7332c12b3e077fef7dd0d93[m
+Author: ehs22n <ehs22nn@gmail.com>
+Date:   Wed May 7 18:57:56 2025 +0330
+
+    add system option drop down animation
+
+[33mcommit 09e50ee491ce583ef2f2ef1a7ff010923ebc3e09[m
+Author: ehs22n <ehs22nn@gmail.com>
+Date:   Wed May 7 18:19:07 2025 +0330
+
+    test
+
+[33mcommit a7fa025fc65b50f61509fadabdecc62a3ee2cde5[m
+Author: ehs22n <ehs22nn@gmail.com>
+Date:   Wed May 7 17:35:42 2025 +0330
+
+    add text system option
+
+[33mcommit 101c1d9f138a14f4252262df344e90821cf381f7[m
+Author: ehs22n <ehs22nn@gmail.com>
+Date:   Wed May 7 17:03:55 2025 +0330
+
+    add system options
+
+[33mcommit 062fbc8e9981b7192517f76c762cd66031b50e4c[m
+Author: ehs22n <ehs22nn@gmail.com>
+Date:   Wed May 7 16:29:46 2025 +0330
+
+    add text to mobile options
+
+[33mcommit ecfca8ec60f5daf61335456a6c3055777b577e90[m
+Author: ehs22n <ehs22nn@gmail.com>
+Date:   Wed May 7 16:20:39 2025 +0330
+
+    add button navbar
+
+[33mcommit 8a41671edf617d3244ad0f2b7d78e8b432fd8ebc[m
+Author: ehs22n <ehs22nn@gmail.com>
+Date:   Tue May 6 21:57:08 2025 +0330
+
+    complete search animtion
+
+[33mcommit 16598aae87e76ef45d46d0396b57811579af68a0[m
+Author: ehs22n <ehs22nn@gmail.com>
+Date:   Tue May 6 21:51:11 2025 +0330
+
+    add search animation
+
+[33mcommit 3cea382b4743b034f87a0eb2246f6dd226aebea0[m
+Author: ehs22n <ehs22nn@gmail.com>
+Date:   Tue May 6 02:56:27 2025 +0800
+
+    change color
+
+[33mcommit 906f238340ccfabe34b66906270ee64e1446ae4b[m
+Author: ehs22n <ehs22nn@gmail.com>
+Date:   Tue May 6 02:43:27 2025 +0800
+
+    a
+
+[33mcommit a72228a100e88e6b8755924d18841b6f019e169c[m
+Author: ehs22n <ehs22nn@gmail.com>
+Date:   Tue May 6 02:35:03 2025 +0800
+
+    searh animation
+
+[33mcommit 6fe34ba2d5fa5e1819decfa6749c37b26d462fc3[m
+Author: ehs22n <ehs22nn@gmail.com>
+Date:   Tue May 6 01:54:30 2025 +0800
+
+    add navbar
+
+[33mcommit 214b33034c67af98bab69bc265d1da43f2a9bd42[m
+Author: Ehsan <6023ehsan6023@gmail.com>
+Date:   Mon May 5 19:35:05 2025 +0330
+
+    add bg
+
+[33mcommit 52f501cb5c65311c708d3241a4dda8d8d58dd5af[m
+Author: Ehsan <6023ehsan6023@gmail.com>
+Date:   Mon May 5 18:43:52 2025 +0330
+
+    add bootstrap
+
+[33mcommit d00c53ff373990e96cdf2bf0fa2cb5486e85be75[m
+Author: Ehsan <6023ehsan6023@gmail.com>
+Date:   Mon May 5 18:10:44 2025 +0330
+
+    first commit
