@@ -69,18 +69,37 @@
                 </li>
   
                 </ul>
-                <div class="search-overlay">
-                    <div class="search-container">
-                        <input type="text" dir="rtl" placeholder="جستجوی فیلم..." class="search-input">
-                        <span class="close-btn">&times;</span>
-                    </div>
-                </div>
+                
         </nav>
 
 
         
+        
+            <div class="text-light system-search-box" id="select-box">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm">
+                            <label for="search-overlay">
+                                
+
+                                
+                                <button class="close-btn">&times;</button>
+                                <input type="text" class="search-overlay" placeholder="جست و جوی فیلم..." dir="rtl" list="browser">
+                                
+                                <datalist id="browser">
+                                    <option value="python"></option>
+                                </datalist>
+                            
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
     </div>
-    
+
+
+
     <nav class="mobile-optoins">
         <ul class="mobile-optoins-ul">
             <li><a href="#">profile</a></li>
