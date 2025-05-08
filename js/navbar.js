@@ -36,3 +36,23 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+
+
+document.addEventListener('DOMContentLoaded', function(){
+    const search = document.getElementById("system-search")
+
+
+
+
+    search.addEventListener("click" , function(){
+
+        console.log("odk");
+        
+
+    })
+
+
+
+
+})
