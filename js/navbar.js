@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const searchBox = document.getElementById("select-box");
     
     
+    
+    
     searchIcon.addEventListener('click', function(e) {
         e.preventDefault();
         liAnimation.classList.add('li');

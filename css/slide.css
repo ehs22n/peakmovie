@@ -11,13 +11,21 @@
 }
 
 .slider {
-    display: flex;
+    display: none;
     overflow-x: auto;
     scroll-behavior: smooth;
     gap: 1rem;
     -webkit-overflow-scrolling: touch; /* برای اسکرول بهتر در موبایل */
     scrollbar-width: none; /* مخفی کردن اسکرول بار در فایرفاکس */
     padding: 10px 0;
+}
+
+
+
+.sliderFlex{
+
+    display: flex !important;
+
 }
 
 
@@ -63,3 +71,6 @@
 .scroll-button.next {
     right: 10px;
 }
+
+
+
