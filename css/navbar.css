@@ -117,6 +117,7 @@
     }
     
     .mobile-optoins-ul a {
+        user-select: none;
         margin-top: 8px;
         display: flex;
         justify-content: center;
