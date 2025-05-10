@@ -11,7 +11,7 @@
 }
 
 .slider {
-    display: none;
+    display: flex;
     overflow-x: auto;
     scroll-behavior: smooth;
     gap: 1rem;
