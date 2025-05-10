@@ -84,7 +84,7 @@
     }
             
     .mobile-optoins{
-    display: flex;
+    display: none;
     background-color: #333;
     position: fixed;
     bottom: 0;
