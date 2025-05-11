@@ -262,6 +262,7 @@
     top: -200%;
     background-color: black;
     transition: 1.3s ease all;
+    z-index: 999;
 }
 
 
