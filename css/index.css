@@ -10,7 +10,7 @@ body{
 }
 
 .bg{
-    position: relative;
+position: relative;
 background-position: center;
 background-size:cover;
 background-repeat: no-repeat;
@@ -28,3 +28,13 @@ width: 100%;
     height: 100%;
     background-color: rgba(19, 19, 19, 0.9); 
   }
+
+.best {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* or specific height if needed */
+}
+.best .container {
+    width: 100%;
+}
