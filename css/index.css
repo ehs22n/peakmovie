@@ -33,8 +33,13 @@ width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%; /* or specific height if needed */
+    height: 30%; 
 }
 .best .container {
     width: 100%;
+}
+
+.round{
+
+    border-radius: 50px;
 }
