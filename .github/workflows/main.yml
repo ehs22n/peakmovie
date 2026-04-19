@@ -33,16 +33,18 @@ jobs:
           dotnet new maui-blazor -n PeakMovie.App --framework net9.0
           echo "PROJECT CREATED (.NET 9)"
 
-      # 5) Restore کامل
+      # 5) Restore داخل مسیر پروژه
       - name: Restore Project
+        working-directory: PeakMovie.App
         run: |
-          dotnet restore PeakMovie.App/PeakMovie.App.csproj
+          dotnet restore
           dotnet workload restore
 
       # 6) ساخت APK
       - name: Publish Android APK
+        working-directory: PeakMovie.App
         run: |
-          dotnet publish PeakMovie.App/PeakMovie.App.csproj `
+          dotnet publish `
             -f net9.0-android `
             -c Debug `
             -p:RuntimeIdentifier=android-arm64 `
@@ -51,20 +53,20 @@ jobs:
             -p:PublishTrimmed=false `
             -p:AndroidLinkTool=None `
             -p:UseInterpreter=true `
-            -o publish
+            -o ../publish
 
       # 7) ساخت مسیر خروجی
       - name: Prepare Release Folder
         run: |
           New-Item -ItemType Directory -Force -Path "releases/android" | Out-Null
 
-      # 8) کپی APK به releases/android
+      # 8) کپی APK ساخته‌شده
       - name: Copy APK
         run: |
           $apk = Get-ChildItem -Path publish -Filter *.apk -Recurse | Select-Object -First 1
           Copy-Item $apk.FullName "releases/android/PeakMovie-Debug.apk" -Force
 
-      # 9) Commit و Push APK
+      # 9) Commit و Push فایل APK
       - name: Commit APK
         run: |
           git config --global user.name "github-actions"
