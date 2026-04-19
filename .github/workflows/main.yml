@@ -1,76 +1,116 @@
-name: Build Debug APK (.NET 9 MAUI Blazor)
+name: Build Avalonia From Zero And Push APK
 
 on:
-  push:
-    branches: ["main"]
   workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  build-android:
-    runs-on: windows-latest
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      DOTNET_VERSION: '9.0.x'
+      ANDROID_API_LEVEL: '34'
+      ANDROID_BUILD_TOOLS: '34.0.0'
+      PROJECT_NAME: 'MananagarApp'
 
     steps:
+    # -----------------------------
+    # Checkout
+    # -----------------------------
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
-      # 1️⃣ Checkout Repository
-      - name: Checkout Code
-        uses: actions/checkout@v4
+    # -----------------------------
+    # Setup .NET
+    # -----------------------------
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      # 2️⃣ Setup .NET 9
-      - name: Setup .NET 9 SDK
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 9.0.x
+    # -----------------------------
+    # Install Avalonia Templates
+    # -----------------------------
+    - name: Install Avalonia Templates
+      run: dotnet new install Avalonia.Templates
 
-      # 3️⃣ Install MAUI Android Workload
-      - name: Install MAUI Workloads
-        run: |
-          dotnet workload install maui
-          dotnet workload install maui-android
-          dotnet workload repair
+    # -----------------------------
+    # Create Project From Scratch
+    # -----------------------------
+    - name: Create Avalonia Cross Platform Project
+      run: |
+        dotnet new avalonia.xplat -n $PROJECT_NAME
+        dotnet restore
 
-      # 4️⃣ Create Blazor Hybrid Project
-      - name: Create Project
-        run: |
-          dotnet new maui-blazor -n PeakMovie.App --framework net9.0
+    # -----------------------------
+    # Setup Java
+    # -----------------------------
+    - name: Setup Java 17
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
 
-      # 5️⃣ Restore Project
-      - name: Restore Project
-        working-directory: PeakMovie.App
-        run: |
-          dotnet restore
+    # -----------------------------
+    # Setup Android SDK
+    # -----------------------------
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
 
-      # 6️⃣ Publish APK
-      - name: Publish Android APK
-        working-directory: PeakMovie.App
-        run: |
-          dotnet publish -f net9.0-android -c Debug `
-            -p:AndroidPackageFormat=apk `
-            -p:AndroidUseSharedRuntime=false `
-            -p:PublishTrimmed=false `
-            -p:AndroidLinkMode=None `
-            -p:UseInterpreter=false `
-            -p:AndroidEnableMultiDex=true `
-            -o ../publish
+    - name: Install Android SDK Packages
+      run: |
+        sdkmanager "platforms;android-${ANDROID_API_LEVEL}"
+        sdkmanager "build-tools;${ANDROID_BUILD_TOOLS}"
+        sdkmanager "platform-tools"
 
-      # 7️⃣ Create Output Folder
-      - name: Prepare Release Folder
-        run: |
-          New-Item -ItemType Directory -Force -Path "releases/android" | Out-Null
+    # -----------------------------
+    # Generate Simple Debug Keystore
+    # -----------------------------
+    - name: Generate Debug Keystore
+      run: |
+        keytool -genkey -v \
+          -keystore debug.keystore \
+          -alias debug \
+          -storepass android \
+          -keypass android \
+          -dname "CN=Mananagar,O=Dev,C=US" \
+          -keyalg RSA \
+          -keysize 2048 \
+          -validity 10000
 
-      # 8️⃣ Copy APK
-      - name: Copy APK
-        run: |
-          $apk = Get-ChildItem -Path publish -Filter *.apk -Recurse | Select-Object -First 1
-          Copy-Item $apk.FullName "releases/android/PeakMovie-Debug.apk" -Force
+    # -----------------------------
+    # Build Signed APK
+    # -----------------------------
+    - name: Publish Signed APK
+      run: |
+        cd $PROJECT_NAME
+        dotnet publish ${PROJECT_NAME}.Android \
+          -c Release \
+          -p:AndroidKeyStore=true \
+          -p:AndroidSigningKeyStore=../debug.keystore \
+          -p:AndroidSigningKeyAlias=debug \
+          -p:AndroidSigningKeyPass=android \
+          -p:AndroidSigningStorePass=android \
+          -o ../output
 
-      # 9️⃣ Commit APK to Repo
-      - name: Commit APK
-        run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "actions@github.com"
-          git add releases/android/PeakMovie-Debug.apk
-          git commit -m "Auto Build Debug APK (.NET 9 MAUI)" || echo "No changes"
-          git push
+    # -----------------------------
+    # Move APK to repo root
+    # -----------------------------
+    - name: Prepare APK Folder
+      run: |
+        mkdir -p apk
+        find output -name "*.apk" -exec cp {} apk/app-release.apk \;
+
+    # -----------------------------
+    # Commit and Push APK
+    # -----------------------------
+    - name: Commit and Push APK
+      run: |
+        git config --global user.name "github-actions"
+        git config --global user.email "actions@github.com"
+        git add apk/app-release.apk
+        git commit -m "Auto build: Add signed APK"
+        git push
