@@ -1,4 +1,4 @@
-name: Build Debug APK (.NET 9 Blazor Hybrid)
+name: Build Universal Debug APK (.NET 9 MAUI Blazor)
 
 on:
   push:
@@ -13,64 +13,66 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      # 1) دریافت کد
+
+      # 1️⃣ دریافت سورس
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # 2) نصب .NET 9 SDK
+      # 2️⃣ نصب .NET 9
       - name: Setup .NET 9 SDK
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 9.0.x
 
-      # 3) نصب workload های MAUI
-      - name: Install MAUI Workload
-        run: dotnet workload install maui
-
-      # 4) ساخت پروژه Blazor Hybrid با .NET 9
-      - name: Create Blazor Hybrid Project
+      # 3️⃣ نصب MAUI Workload
+      - name: Install MAUI
         run: |
-          dotnet new maui-blazor -n PeakMovie.App --framework net9.0
-          echo "PROJECT CREATED (.NET 9)"
-
-      # 5) Restore داخل مسیر پروژه
-      - name: Restore Project
-        working-directory: PeakMovie.App
-        run: |
-          dotnet restore
+          dotnet workload install maui
           dotnet workload restore
 
-      # 6) ساخت APK
+      # 4️⃣ ساخت پروژه Blazor Hybrid
+      - name: Create Project
+        run: |
+          dotnet new maui-blazor -n PeakMovie.App --framework net9.0
+          echo "MAUI Blazor Project Created"
+
+      # 5️⃣ Restore
+      - name: Restore
+        working-directory: PeakMovie.App
+        run: dotnet restore
+
+      # 6️⃣ Build Universal APK (سازگار با اکثر گوشی‌ها)
       - name: Publish Android APK
         working-directory: PeakMovie.App
         run: |
           dotnet publish `
             -f net9.0-android `
             -c Debug `
-            -p:RuntimeIdentifier=android-arm64 `
+            -p:RuntimeIdentifiers=android-arm;android-arm64 `
             -p:AndroidPackageFormat=apk `
             -p:AndroidUseSharedRuntime=false `
             -p:PublishTrimmed=false `
-            -p:AndroidLinkTool=None `
-            -p:UseInterpreter=true `
+            -p:AndroidLinkMode=None `
+            -p:UseInterpreter=false `
+            -p:AndroidEnableMultiDex=true `
             -o ../publish
 
-      # 7) ساخت مسیر خروجی
-      - name: Prepare Release Folder
+      # 7️⃣ ساخت پوشه خروجی
+      - name: Prepare Folder
         run: |
           New-Item -ItemType Directory -Force -Path "releases/android" | Out-Null
 
-      # 8) کپی APK ساخته‌شده
+      # 8️⃣ پیدا کردن APK
       - name: Copy APK
         run: |
           $apk = Get-ChildItem -Path publish -Filter *.apk -Recurse | Select-Object -First 1
           Copy-Item $apk.FullName "releases/android/PeakMovie-Debug.apk" -Force
 
-      # 9) Commit و Push فایل APK
+      # 9️⃣ Push خروجی به repo
       - name: Commit APK
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "actions@github.com"
           git add releases/android/PeakMovie-Debug.apk
-          git commit -m "Generated Debug APK (.NET 9 Auto Project Creation)" || echo "No changes"
+          git commit -m "Auto Build Universal Debug APK (.NET 9 MAUI)" || echo "No changes"
           git push
