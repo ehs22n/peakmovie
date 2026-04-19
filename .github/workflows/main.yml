@@ -17,8 +17,9 @@ jobs:
       PROJECT_NAME: 'MananagarApp'
 
     steps:
+
     # -----------------------------
-    # Checkout
+    # Checkout repo
     # -----------------------------
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -32,26 +33,33 @@ jobs:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
     # -----------------------------
-    # Install Avalonia Templates
+    # Install Avalonia templates
     # -----------------------------
     - name: Install Avalonia Templates
       run: dotnet new install Avalonia.Templates
 
     # -----------------------------
-    # Create Project From Scratch
+    # Create project from zero
     # -----------------------------
-    - name: Create Avalonia Cross Platform Project
+    - name: Create Avalonia Project
       run: |
         dotnet new avalonia.xplat -n $PROJECT_NAME
+
+    # -----------------------------
+    # Restore solution
+    # -----------------------------
+    - name: Restore NuGet
+      run: |
+        cd $PROJECT_NAME
         dotnet restore
 
     # -----------------------------
     # Setup Java
     # -----------------------------
-    - name: Setup Java 17
+    - name: Setup Java
       uses: actions/setup-java@v4
       with:
-        distribution: 'temurin'
+        distribution: temurin
         java-version: '17'
 
     # -----------------------------
@@ -60,14 +68,14 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
 
-    - name: Install Android SDK Packages
+    - name: Install Android packages
       run: |
         sdkmanager "platforms;android-${ANDROID_API_LEVEL}"
         sdkmanager "build-tools;${ANDROID_BUILD_TOOLS}"
         sdkmanager "platform-tools"
 
     # -----------------------------
-    # Generate Simple Debug Keystore
+    # Generate simple keystore
     # -----------------------------
     - name: Generate Debug Keystore
       run: |
@@ -82,12 +90,13 @@ jobs:
           -validity 10000
 
     # -----------------------------
-    # Build Signed APK
+    # Build signed APK
     # -----------------------------
-    - name: Publish Signed APK
+    - name: Build APK
       run: |
         cd $PROJECT_NAME
-        dotnet publish ${PROJECT_NAME}.Android \
+
+        dotnet publish $PROJECT_NAME.Android/$PROJECT_NAME.Android.csproj \
           -c Release \
           -p:AndroidKeyStore=true \
           -p:AndroidSigningKeyStore=../debug.keystore \
@@ -97,20 +106,23 @@ jobs:
           -o ../output
 
     # -----------------------------
-    # Move APK to repo root
+    # Collect APK
     # -----------------------------
-    - name: Prepare APK Folder
+    - name: Prepare APK
       run: |
         mkdir -p apk
         find output -name "*.apk" -exec cp {} apk/app-release.apk \;
 
     # -----------------------------
-    # Commit and Push APK
+    # Commit APK
     # -----------------------------
-    - name: Commit and Push APK
+    - name: Commit APK
       run: |
         git config --global user.name "github-actions"
         git config --global user.email "actions@github.com"
-        git add apk/app-release.apk
-        git commit -m "Auto build: Add signed APK"
+
+        git add apk/app-release.apk || true
+
+        git commit -m "Auto build: APK generated" || echo "Nothing to commit"
+
         git push
