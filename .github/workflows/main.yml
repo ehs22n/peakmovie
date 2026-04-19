@@ -1,4 +1,4 @@
-name: Build Universal Debug APK (.NET 9 MAUI Blazor)
+name: Build Debug APK (.NET 9 MAUI Blazor)
 
 on:
   push:
@@ -14,7 +14,7 @@ jobs:
 
     steps:
 
-      # 1️⃣ Checkout
+      # 1️⃣ Checkout Repository
       - name: Checkout Code
         uses: actions/checkout@v4
 
@@ -24,30 +24,29 @@ jobs:
         with:
           dotnet-version: 9.0.x
 
-      # 3️⃣ Install MAUI Android Workloads (فقط نصب، نه restore)
+      # 3️⃣ Install MAUI Android Workload
       - name: Install MAUI Workloads
         run: |
           dotnet workload install maui
           dotnet workload install maui-android
           dotnet workload repair
 
-      # 4️⃣ Create Project
+      # 4️⃣ Create Blazor Hybrid Project
       - name: Create Project
         run: |
           dotnet new maui-blazor -n PeakMovie.App --framework net9.0
 
-      # 5️⃣ Restore Project (بعد از ساخته شدن پروژه)
+      # 5️⃣ Restore Project
       - name: Restore Project
         working-directory: PeakMovie.App
         run: |
           dotnet restore
 
-      # 6️⃣ Publish Universal Debug APK
+      # 6️⃣ Publish APK
       - name: Publish Android APK
         working-directory: PeakMovie.App
         run: |
           dotnet publish -f net9.0-android -c Debug `
-            -p:RuntimeIdentifiers="android-arm;android-arm64" `
             -p:AndroidPackageFormat=apk `
             -p:AndroidUseSharedRuntime=false `
             -p:PublishTrimmed=false `
@@ -56,7 +55,7 @@ jobs:
             -p:AndroidEnableMultiDex=true `
             -o ../publish
 
-      # 7️⃣ Create Release Folder
+      # 7️⃣ Create Output Folder
       - name: Prepare Release Folder
         run: |
           New-Item -ItemType Directory -Force -Path "releases/android" | Out-Null
@@ -67,11 +66,11 @@ jobs:
           $apk = Get-ChildItem -Path publish -Filter *.apk -Recurse | Select-Object -First 1
           Copy-Item $apk.FullName "releases/android/PeakMovie-Debug.apk" -Force
 
-      # 9️⃣ Commit APK
+      # 9️⃣ Commit APK to Repo
       - name: Commit APK
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "actions@github.com"
           git add releases/android/PeakMovie-Debug.apk
-          git commit -m "Auto Build Universal Debug APK (.NET 9 MAUI)" || echo "No changes"
+          git commit -m "Auto Build Debug APK (.NET 9 MAUI)" || echo "No changes"
           git push
