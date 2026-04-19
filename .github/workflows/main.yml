@@ -24,11 +24,9 @@ jobs:
         with:
           dotnet-version: 9.0.x
 
-      # 3️⃣ نصب MAUI Workload
-      - name: Install MAUI
-        run: |
-          dotnet workload install maui
-          dotnet workload restore
+      # 3️⃣ نصب MAUI
+      - name: Install MAUI Workload
+        run: dotnet workload install maui
 
       # 4️⃣ ساخت پروژه Blazor Hybrid
       - name: Create Project
@@ -36,12 +34,14 @@ jobs:
           dotnet new maui-blazor -n PeakMovie.App --framework net9.0
           echo "MAUI Blazor Project Created"
 
-      # 5️⃣ Restore
-      - name: Restore
+      # 5️⃣ Restore پروژه (مسیر صحیح)
+      - name: Restore Project
         working-directory: PeakMovie.App
-        run: dotnet restore
+        run: |
+          dotnet restore
+          dotnet workload restore PeakMovie.App.csproj
 
-      # 6️⃣ Build Universal APK (سازگار با اکثر گوشی‌ها)
+      # 6️⃣ Build APK سازگار با اکثر دستگاه‌ها
       - name: Publish Android APK
         working-directory: PeakMovie.App
         run: |
@@ -58,7 +58,7 @@ jobs:
             -o ../publish
 
       # 7️⃣ ساخت پوشه خروجی
-      - name: Prepare Folder
+      - name: Prepare Release Folder
         run: |
           New-Item -ItemType Directory -Force -Path "releases/android" | Out-Null
 
@@ -68,7 +68,7 @@ jobs:
           $apk = Get-ChildItem -Path publish -Filter *.apk -Recurse | Select-Object -First 1
           Copy-Item $apk.FullName "releases/android/PeakMovie-Debug.apk" -Force
 
-      # 9️⃣ Push خروجی به repo
+      # 9️⃣ Commit خروجی
       - name: Commit APK
         run: |
           git config --global user.name "github-actions"
