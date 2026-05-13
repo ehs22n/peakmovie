@@ -13,7 +13,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -26,14 +27,25 @@ jobs:
         with:
           channel: stable
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: flutter pub get
 
       - name: Build APK
         run: flutter build apk --release
 
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-release
-          path: build/app/outputs/flutter-apk/app-release.apk
+      - name: Create Release Folder
+        run: mkdir -p releases
+
+      - name: Copy APK
+        run: cp build/app/outputs/flutter-apk/app-release.apk releases/app-release.apk
+
+      - name: Commit APK
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+
+          git add releases/app-release.apk
+
+          git commit -m "Auto build APK [skip ci]" || echo "No changes to commit"
+
+          git push
