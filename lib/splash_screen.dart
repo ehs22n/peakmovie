@@ -55,7 +55,7 @@ class _SplashScreenState extends State<SplashScreen> {
             const Text(
               "پیک مووی",
               style: TextStyle(
-                fontFamily: 'Vazir',
+                fontFamily: 'Digi Trafic Bold.ttf',
                 color: Colors.white,
                 fontSize: 36,
                 fontWeight: FontWeight.bold,
