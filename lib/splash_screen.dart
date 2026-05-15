@@ -15,30 +15,31 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
-    Timer(const Duration(seconds: 3), () {
-
+    // تغییر به ۵ ثانیه
+    Timer(const Duration(seconds: 5), () {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => const HomePage(),
         ),
       );
-
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xff0F172A),
+    final theme = Theme.of(context);
+    final colors = theme.colorScheme;
 
+    return Scaffold(
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
 
             // لوگو
-         Container(
+            Container(
               padding: const EdgeInsets.all(20),
               child: Image.asset(
                 "assets/images/splash_logo.png",
@@ -48,15 +49,13 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
             ),
 
-
             const SizedBox(height: 30),
 
             // عنوان اصلی
-            const Text(
+            Text(
               "پیک مووی",
               style: TextStyle(
-                fontFamily: 'Digi Trafic Bold.ttf',
-                color: Colors.white,
+                color: theme.textTheme.bodyLarge?.color,
                 fontSize: 36,
                 fontWeight: FontWeight.bold,
                 letterSpacing: 1,
@@ -66,11 +65,10 @@ class _SplashScreenState extends State<SplashScreen> {
             const SizedBox(height: 12),
 
             // شعار
-            const Text(
-              "فیلم و سریال های روز دنیا",
+            Text(
+              "فیلم و سریال‌های روز دنیا",
               style: TextStyle(
-                fontFamily: 'Vazir',
-                color: Colors.greenAccent,
+                color: colors.primary,
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
               ),
@@ -79,8 +77,8 @@ class _SplashScreenState extends State<SplashScreen> {
             const SizedBox(height: 40),
 
             // لودینگ
-            const CircularProgressIndicator(
-              color: Colors.greenAccent,
+            CircularProgressIndicator(
+              color: colors.primary,
               strokeWidth: 3,
             ),
           ],

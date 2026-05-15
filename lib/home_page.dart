@@ -5,6 +5,8 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:peakmovie/main_layout.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import 'color/theme/app_colors.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -18,459 +20,322 @@ class _HomePageState extends State<HomePage> {
   int activeIndex = 0;
 
   final List<String> posters = [
-
-    "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba",
-
-    "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c",
-
-    "https://images.unsplash.com/photo-1478720568477-152d9b164e26",
-
+    "https://zardfilm.in/wp-content/uploads/2026/03/Rooster-2026-series-2-250x368.webp"
   ];
 
   @override
   Widget build(BuildContext context) {
 
-    return MainLayout(
-
-      currentIndex: currentIndex,
-
-      onTap: (index) {
-
-        setState(() {
-          currentIndex = index;
-        });
-
-      },
-
-      child: SingleChildScrollView(
-
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-
-            const SizedBox(height: 20),
-
-            // ================= SLIDER =================
-
-            CarouselSlider.builder(
-
-              itemCount: posters.length,
-
-              options: CarouselOptions(
-
-                height: 220,
-
-                autoPlay: true,
-
-                autoPlayInterval:
-                const Duration(seconds: 5),
-
-                autoPlayAnimationDuration:
-                const Duration(milliseconds: 500),
-
-                viewportFraction: 0.90,
-
-                enlargeCenterPage: false,
-
-                onPageChanged: (index, reason) {
-
-                  setState(() {
-                    activeIndex = index;
-                  });
-
-                },
-              ),
-
-              itemBuilder: (context, index, realIndex) {
-
-                final image = posters[index];
-
-                return Container(
-
-                  margin:
-                  const EdgeInsets.symmetric(horizontal: 6),
-
-                  decoration: BoxDecoration(
-
-                    borderRadius: BorderRadius.circular(22),
-
-                    boxShadow: [
-
-                      BoxShadow(
-                        color:
-                        Colors.greenAccent.withOpacity(0.08),
-                        blurRadius: 10,
-                      ),
-
-                    ],
-                  ),
-
-                  child: ClipRRect(
-
-                    borderRadius: BorderRadius.circular(22),
-
-                    child: Stack(
-                      fit: StackFit.expand,
-                      children: [
-
-                        CachedNetworkImage(
-                          imageUrl: image,
-                          fit: BoxFit.cover,
-                        ),
-
-                        Container(
-                          decoration: BoxDecoration(
-
-                            gradient: LinearGradient(
-
-                              begin: Alignment.bottomCenter,
-                              end: Alignment.topCenter,
-
-                              colors: [
-
-                                Colors.black.withOpacity(0.7),
-                                Colors.transparent,
-
-                              ],
-                            ),
-                          ),
-                        ),
-
-                        const Positioned(
-
-                          bottom: 20,
-                          left: 20,
-
-                          child: Text(
-                            "Top Cinema",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-
-                      ],
-                    ),
-                  ),
-                ).animate().fade(
-                  duration: 300.ms,
-                );
-
-              },
-            ),
-
-            const SizedBox(height: 18),
-
-            // ================= INDICATOR =================
-
-            Center(
-              child: AnimatedSmoothIndicator(
-
-                activeIndex: activeIndex,
-                count: posters.length,
-
-                effect: ExpandingDotsEffect(
-
-                  activeDotColor: Colors.greenAccent,
-                  dotColor: Colors.white24,
-
-                  dotHeight: 7,
-                  dotWidth: 7,
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 35),
-
-            // ================= TITLE =================
-
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 18),
-
-              child: Text(
-                "فیلم‌های محبوب",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 20),
-
-            // ================= MOVIES LIST =================
-
-            SizedBox(
-
-              height: 290,
-
-              child: ListView.builder(
-
-                scrollDirection: Axis.horizontal,
-                itemCount: 10,
-
-                itemBuilder: (context, index) {
-
-                  return Container(
-
-                    width: 180,
-
-                    margin: const EdgeInsets.only(
-                      left: 18,
-                      bottom: 8,
-                      top: 8,
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final textColor = theme.textTheme.bodyLarge?.color;
+
+    return Scaffold(
+      backgroundColor: theme.scaffoldBackgroundColor,
+      body: MainLayout(
+        currentIndex: currentIndex,
+        onTap: (index) => setState(() => currentIndex = index),
+
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+
+              const SizedBox(height: 20),
+
+              // ================= TOP SLIDER =================
+
+              Stack(
+                children: [
+
+                  CarouselSlider.builder(
+                    itemCount: posters.length,
+                    options: CarouselOptions(
+                      height: 220,
+                      autoPlay: true,
+                      autoPlayInterval: const Duration(seconds: 5),
+                      viewportFraction: 1,
+                      enlargeCenterPage: false,
+                      onPageChanged: (i, _) => setState(() => activeIndex = i),
                     ),
 
-                    decoration: BoxDecoration(
+                    itemBuilder: (context, index, _) {
 
-                      color: const Color(0xff161B2C),
+                      final image = posters[index];
 
-                      borderRadius:
-                      BorderRadius.circular(22),
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
 
-                      boxShadow: [
-
-                        BoxShadow(
-                          color: Colors.greenAccent
-                              .withOpacity(0.08),
-                          blurRadius: 14,
-                          spreadRadius: 1,
-                        ),
-
-                      ],
-                    ),
-
-                    child: Column(
-                      crossAxisAlignment:
-                      CrossAxisAlignment.start,
-
-                      children: [
-
-                        Expanded(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
 
                           child: Stack(
+                            fit: StackFit.expand,
                             children: [
 
-                              ClipRRect(
-
-                                borderRadius:
-                                const BorderRadius.vertical(
-                                  top: Radius.circular(22),
-                                ),
-
-                                child: CachedNetworkImage(
-
-                                  imageUrl:
-                                  posters[index % posters.length],
-
-                                  fit: BoxFit.cover,
-                                  width: double.infinity,
-                                  height: double.infinity,
-                                ),
+                              CachedNetworkImage(
+                                imageUrl: image,
+                                fit: BoxFit.cover,
                               ),
 
-                              // ===== OVERLAY =====
-
                               Container(
-
                                 decoration: BoxDecoration(
-
-                                  borderRadius:
-                                  const BorderRadius.vertical(
-                                    top: Radius.circular(22),
-                                  ),
-
                                   gradient: LinearGradient(
-
-                                    begin:
-                                    Alignment.bottomCenter,
-
-                                    end:
-                                    Alignment.topCenter,
-
+                                    begin: Alignment.bottomCenter,
+                                    end: Alignment.topCenter,
                                     colors: [
-
-                                      Colors.black
-                                          .withOpacity(0.75),
-
+                                      Colors.black.withOpacity(0.45),
                                       Colors.transparent,
-
                                     ],
                                   ),
                                 ),
                               ),
 
-                              // ===== PLAY BUTTON =====
+                              Positioned(
+                                bottom: 18,
+                                left: 18,
 
-                              Center(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
 
-                                child: Container(
-
-                                  padding:
-                                  const EdgeInsets.all(12),
-
-                                  decoration: BoxDecoration(
-
-                                    color:
-                                    Colors.black.withOpacity(0.45),
-
-                                    shape: BoxShape.circle,
-
-                                    border: Border.all(
-                                      color:
-                                      Colors.greenAccent,
-                                      width: 1.5,
+                                    const Text(
+                                      "فیلم سینمایی",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                     ),
-                                  ),
 
-                                  child: const Icon(
-                                    Icons.play_arrow_rounded,
-                                    color:
-                                    Colors.greenAccent,
-                                    size: 34,
-                                  ),
+                                    const SizedBox(height: 6),
+
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 12,
+                                          vertical: 5),
+                                      decoration: BoxDecoration(
+                                        color: AppColors.primary,
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: const Text(
+                                        "تماشا",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-
-                              // ===== TOP RIGHT ICON =====
-
-                              const Positioned(
-
-                                top: 12,
-                                right: 12,
-
-                                child: Icon(
-                                  Icons.favorite_border,
-                                  color: Colors.white,
-                                ),
-                              ),
-
                             ],
                           ),
+                        ).animate().fade(duration: 300.ms),
+                      );
+                    },
+                  ),
+
+                  Positioned(
+                    bottom: 12,
+                    left: 0,
+                    right: 0,
+
+                    child: Center(
+                      child: AnimatedSmoothIndicator(
+                        activeIndex: activeIndex,
+                        count: posters.length,
+
+                        effect: ExpandingDotsEffect(
+                          activeDotColor: AppColors.primary,
+                          dotColor: isDark ? Colors.white24 : Colors.black26,
+                          dotHeight: 6,
+                          dotWidth: 6,
                         ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
 
-                        Padding(
+              const SizedBox(height: 30),
 
-                          padding:
-                          const EdgeInsets.all(12),
+              buildMovieRow("فیلم‌های محبوب", context),
+              const SizedBox(height: 30),
 
-                          child: Column(
-                            crossAxisAlignment:
-                            CrossAxisAlignment.start,
+              buildMovieRow("جدیدترین فیلم‌ها", context),
+              const SizedBox(height: 30),
 
-                            children: [
+              buildMovieRow("پیشنهاد ویژه", context),
+              const SizedBox(height: 30),
 
-                              Text(
-                                "Movie ${index + 1}",
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight:
-                                  FontWeight.bold,
-                                ),
+  // ================= MOVIE ROW WIDGET =================
+
+  Widget buildMovieRow(String title, BuildContext context) {
+
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final textColor = theme.textTheme.bodyLarge?.color;
+
+    return Column(
+      children: [
+
+        // ===== Title =====
+
+        Padding(
+          padding: const EdgeInsets.only(left: 18, right: 6),
+
+          child: Row(
+            textDirection: TextDirection.rtl,
+
+            children: [
+
+              Text(
+                title,
+                style: TextStyle(
+                  color: textColor,
+                  fontSize: 22,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+
+              const SizedBox(width: 10),
+
+              Expanded(
+                child: Divider(
+                  color: isDark ? Colors.white12 : Colors.black12,
+                  thickness: 1,
+                ),
+              ),
+
+              const SizedBox(width: 10),
+
+              const Text(
+                "مشاهده همه",
+                style: TextStyle(
+                  color: AppColors.primary,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+        ),
+
+        const SizedBox(height: 18),
+
+        // ===== Movies List =====
+
+        SizedBox(
+          height: 215,
+
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: 10,
+            padding: const EdgeInsets.only(right: 14),
+
+            itemBuilder: (context, index) {
+
+              final posterImage = posters[index % posters.length];
+
+              return Container(
+                width: 125,
+                margin: const EdgeInsets.only(left: 14),
+
+                decoration: BoxDecoration(
+                  color: theme.cardColor,
+                  borderRadius: BorderRadius.circular(10),
+
+                  border: Border.all(
+                    color: isDark ? Colors.white10 : Colors.black12,
+                  ),
+                ),
+
+                child: Column(
+                  children: [
+
+                    ClipRRect(
+                      borderRadius: const BorderRadius.vertical(
+                        top: Radius.circular(10),
+                      ),
+
+                      child: Stack(
+                        children: [
+
+                          CachedNetworkImage(
+                            imageUrl: posterImage,
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                            height: 145,
+                          ),
+
+                          Positioned(
+                            top: 8,
+                            right: 8,
+
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 7,
+                                  vertical: 3),
+
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.45),
+                                borderRadius: BorderRadius.circular(6),
                               ),
 
-                              const SizedBox(height: 8),
-
-                              Row(
+                              child: Row(
                                 children: [
 
                                   const Icon(
                                     Icons.star,
                                     color: Colors.amber,
-                                    size: 18,
+                                    size: 13,
                                   ),
-
-                                  const SizedBox(width: 5),
 
                                   Text(
-                                    "8.${index}",
-
+                                    " 8.${index}",
                                     style: const TextStyle(
-                                      color: Colors.white70,
+                                      color: Colors.white,
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
-
-                                  const Spacer(),
-
-                                  Container(
-
-                                    padding:
-                                    const EdgeInsets.symmetric(
-                                      horizontal: 8,
-                                      vertical: 4,
-                                    ),
-
-                                    decoration: BoxDecoration(
-
-                                      color:
-                                      Colors.greenAccent
-                                          .withOpacity(0.15),
-
-                                      borderRadius:
-                                      BorderRadius.circular(10),
-                                    ),
-
-                                    child: const Text(
-                                      "HD",
-                                      style: TextStyle(
-                                        color:
-                                        Colors.greenAccent,
-                                        fontSize: 11,
-                                        fontWeight:
-                                        FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-
                                 ],
-                              )
-
-                            ],
+                              ),
+                            ),
                           ),
-                        ),
-
-                      ],
+                        ],
+                      ),
                     ),
-                  )
 
-                  // ================= ANIMATIONS =================
+                    const SizedBox(height: 8),
 
-                      .animate(
-                    delay: (index * 120).ms,
-                  )
-
-                      .fade(
-                    duration: 500.ms,
-                  )
-
-                      .slideX(
-                    begin: 0.25,
-                    end: 0,
-                    curve: Curves.easeOutQuart,
-                    duration: 600.ms,
-                  )
-
-                      .scale(
-                    begin: const Offset(0.92, 0.92),
-                    end: const Offset(1, 1),
-                    curve: Curves.easeOutBack,
-                    duration: 600.ms,
-                  );
-
-                },
-              ),
-            ),
-
-            const SizedBox(height: 30),
-
-          ],
+                    Text(
+                      "Movie ${index + 1}",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: textColor,
+                        fontSize: 14.5,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+                  .animate(delay: (index * 70).ms)
+                  .fade(duration: 300.ms)
+                  .slideX(begin: 0.2, end: 0);
+            },
+          ),
         ),
-      ),
+      ],
     );
   }
 }

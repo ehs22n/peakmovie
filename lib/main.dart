@@ -1,19 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'color/theme/theme_provider.dart';
+import 'color/theme/app_theme.dart';
 import 'splash_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => ThemeProvider(),
+      child: const PeakMovieApp(),
+    ),
+  );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class PeakMovieApp extends StatelessWidget {
+  const PeakMovieApp({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Movie App',
-      theme: ThemeData.dark(),
+      themeMode: themeProvider.themeMode,
+      theme: AppTheme.light,
+      darkTheme: AppTheme.dark,
+
+      
       home: const SplashScreen(),
     );
   }

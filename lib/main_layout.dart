@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'setting_page.dart';
 
 class MainLayout extends StatelessWidget {
   final Widget child;
@@ -18,11 +19,17 @@ class MainLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colors = theme.colorScheme;
+
     return Scaffold(
-      backgroundColor: const Color(0xff0B0F1A),
+      backgroundColor: theme.scaffoldBackgroundColor,
+
+      // ================= APP BAR =================
+
       appBar: showNavigation
           ? AppBar(
-              backgroundColor: const Color(0xff0B0F1A),
+              backgroundColor: theme.scaffoldBackgroundColor,
               elevation: 0,
               centerTitle: false,
               automaticallyImplyLeading: false,
@@ -31,14 +38,12 @@ class MainLayout extends StatelessWidget {
                   Image.asset(
                     "assets/images/logo.png",
                     width: 38,
-                    // در صورت نداشتن تصویر موقتا از کد زیر استفاده کنید تا خطا ندهد:
-                    // errorBuilder: (context, error, stackTrace) => const Icon(Icons.error, color: Colors.white),
                   ),
                   const SizedBox(width: 10),
-                  const Text(
+                  Text(
                     "پیک مووی",
                     style: TextStyle(
-                      color: Colors.white,
+                      color: theme.textTheme.bodyLarge?.color,
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
                     ),
@@ -50,12 +55,11 @@ class MainLayout extends StatelessWidget {
                   builder: (context) {
                     return IconButton(
                       onPressed: () {
-                        // باز کردن Drawer از سمت راست
                         Scaffold.of(context).openEndDrawer();
                       },
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.menu_rounded,
-                        color: Colors.greenAccent,
+                        color: colors.primary,
                         size: 30,
                       ),
                     );
@@ -64,41 +68,100 @@ class MainLayout extends StatelessWidget {
               ],
             )
           : null,
-      
-      // استفاده از endDrawer برای باز شدن از سمت راست
+
+      // ================= DRAWER =================
+
       endDrawer: showNavigation
           ? Drawer(
-              backgroundColor: const Color(0xff111827),
+              backgroundColor: theme.cardColor,
               child: SafeArea(
                 child: Directionality(
-                  textDirection: TextDirection.rtl, // راست‌چین کردن محتوای دراور
+                  textDirection: TextDirection.rtl,
                   child: Column(
                     children: [
                       const SizedBox(height: 20),
+
+                      // ---------- Header ----------
                       CircleAvatar(
                         radius: 42,
-                        backgroundColor: Colors.greenAccent,
+                        backgroundColor: colors.primary,
                         child: Image.asset(
                           "assets/images/logo.png",
                           width: 45,
-                          // errorBuilder: (context, error, stackTrace) => const Icon(Icons.person, color: Colors.black, size: 45,),
                         ),
                       ),
+
                       const SizedBox(height: 16),
-                      const Text(
+
+                      Text(
                         "پیک مووی",
                         style: TextStyle(
-                          color: Colors.white,
+                          color: theme.textTheme.bodyLarge?.color,
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+
                       const SizedBox(height: 30),
-                      buildDrawerItem(Icons.home_rounded, "خانه"),
-                      buildDrawerItem(Icons.movie_creation_outlined, "فیلم و سریال"),
-                      buildDrawerItem(Icons.favorite_border, "علاقه‌مندی‌ها"),
-                      buildDrawerItem(Icons.person_outline_rounded, "پروفایل"),
-                      buildDrawerItem(Icons.settings_outlined, "تنظیمات"),
+
+                      // ---------- Items ----------
+                      buildDrawerItem(context, Icons.home_rounded, "خانه"),
+                      buildDrawerItem(context, Icons.movie_creation_outlined, "فیلم و سریال"),
+                      buildDrawerItem(context, Icons.favorite_border, "علاقه‌مندی‌ها"),
+                      buildDrawerItem(context, Icons.person_outline_rounded, "پروفایل"),
+
+                      buildDrawerItem(
+                        context,
+                        Icons.settings_outlined,
+                        "تنظیمات",
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const SettingsPage(),
+                            ),
+                          );
+                        },
+                      ),
+
+                      const Spacer(),
+
+                      // ---------- Divider ----------
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Divider(
+                          color: theme.dividerColor.withOpacity(0.3),
+                          thickness: 1,
+                        ),
+                      ),
+
+                      // ---------- Footer ----------
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "نسخه برنامه 1.0.0",
+                              style: TextStyle(
+                                color: theme.textTheme.bodyMedium?.color,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w500,
+                              ),
+
+                            ),
+                            Image.asset(
+                              "assets/images/cipher_unit.png",
+                              width: 28,
+                              height: 28,
+                            ),
+
+                          ],
+                        ),
+                      ),
+
+                      const SizedBox(height: 10),
                     ],
                   ),
                 ),
@@ -108,11 +171,13 @@ class MainLayout extends StatelessWidget {
 
       body: child,
 
+      // ================= BOTTOM NAVIGATION =================
+
       bottomNavigationBar: showNavigation
           ? BottomNavigationBar(
-              backgroundColor: const Color(0xff111827),
-              selectedItemColor: Colors.greenAccent,
-              unselectedItemColor: Colors.white54,
+              backgroundColor: theme.cardColor,
+              selectedItemColor: colors.primary,
+              unselectedItemColor: theme.textTheme.bodyMedium?.color,
               type: BottomNavigationBarType.fixed,
               currentIndex: currentIndex,
               onTap: (index) {
@@ -120,13 +185,14 @@ class MainLayout extends StatelessWidget {
                   showMaterialModalBottomSheet(
                     context: context,
                     backgroundColor: Colors.transparent,
-                    expand: true,
+                    expand: false,
                     builder: (_) {
                       return const SearchBottomSheet();
                     },
                   );
                   return;
                 }
+
                 onTap(index);
               },
               items: const [
@@ -152,26 +218,37 @@ class MainLayout extends StatelessWidget {
     );
   }
 
+  // ================= DRAWER ITEM =================
+
   Widget buildDrawerItem(
+    BuildContext context,
     IconData icon,
-    String title,
-  ) {
+    String title, {
+    VoidCallback? onTap,
+  }) {
+    final theme = Theme.of(context);
+    final colors = theme.colorScheme;
+
     return ListTile(
       leading: Icon(
         icon,
-        color: Colors.greenAccent,
+        color: colors.primary,
       ),
       title: Text(
         title,
-        style: const TextStyle(
-          color: Colors.white,
+        style: TextStyle(
+          color: theme.textTheme.bodyLarge?.color,
           fontSize: 16,
         ),
       ),
-      onTap: () {},
+      onTap: onTap,
     );
   }
 }
+
+////////////////////////////////////////////////////
+/// SEARCH BOTTOM SHEET
+////////////////////////////////////////////////////
 
 class SearchBottomSheet extends StatefulWidget {
   const SearchBottomSheet({super.key});
@@ -182,6 +259,7 @@ class SearchBottomSheet extends StatefulWidget {
 
 class _SearchBottomSheetState extends State<SearchBottomSheet> {
   int selectedType = 0;
+
   final TextEditingController searchController = TextEditingController();
 
   @override
@@ -192,23 +270,22 @@ class _SearchBottomSheetState extends State<SearchBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colors = theme.colorScheme;
+
+    final double sheetHeight = MediaQuery.of(context).size.height * 0.80;
+
     return Directionality(
-      textDirection: TextDirection.rtl, // برای راست‌چین شدن فیلد جستجو و المان‌ها
+      textDirection: TextDirection.rtl,
       child: ClipRRect(
-        borderRadius: const BorderRadius.vertical(
-          top: Radius.circular(32),
-        ),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
         child: BackdropFilter(
-          filter: ImageFilter.blur(
-            sigmaX: 10,
-            sigmaY: 10,
-          ),
+          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
           child: Container(
+            height: sheetHeight,
             decoration: BoxDecoration(
-              color: const Color(0xff111827).withOpacity(0.97),
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(32),
-              ),
+              color: theme.cardColor.withOpacity(0.97),
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
             ),
             child: SafeArea(
               top: false,
@@ -219,15 +296,15 @@ class _SearchBottomSheetState extends State<SearchBottomSheet> {
                     width: 65,
                     height: 5,
                     decoration: BoxDecoration(
-                      color: Colors.white24,
+                      color: Colors.grey.withOpacity(0.4),
                       borderRadius: BorderRadius.circular(20),
                     ),
                   ),
                   const SizedBox(height: 24),
-                  const Text(
+                  Text(
                     "جستجو",
                     style: TextStyle(
-                      color: Colors.white,
+                      color: theme.textTheme.bodyLarge?.color,
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
                     ),
@@ -237,26 +314,17 @@ class _SearchBottomSheetState extends State<SearchBottomSheet> {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: TextField(
                       controller: searchController,
-                      style: const TextStyle(
-                        color: Colors.white,
+                      style: TextStyle(
+                        color: theme.textTheme.bodyLarge?.color,
                       ),
-                      cursorColor: Colors.greenAccent,
+                      cursorColor: colors.primary,
                       decoration: InputDecoration(
                         hintText: selectedType == 0
                             ? "فیلم یا سریال جستجو کن..."
                             : "کاربر جستجو کن...",
-                        hintStyle: const TextStyle(
-                          color: Colors.white38,
-                        ),
-                        prefixIcon: const Icon(
-                          Icons.search_rounded,
-                          color: Colors.greenAccent,
-                        ),
+                        prefixIcon: Icon(Icons.search_rounded, color: colors.primary),
                         filled: true,
-                        fillColor: const Color(0xff1E293B),
-                        contentPadding: const EdgeInsets.symmetric(
-                          vertical: 18,
-                        ),
+                        fillColor: theme.cardColor,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(18),
                           borderSide: BorderSide.none,
@@ -264,89 +332,11 @@ class _SearchBottomSheetState extends State<SearchBottomSheet> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 28),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 20),
-                    padding: const EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                      color: const Color(0xff1E293B),
-                      borderRadius: BorderRadius.circular(18),
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                selectedType = 0;
-                              });
-                            },
-                            child: AnimatedContainer(
-                              duration: const Duration(milliseconds: 250),
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 14,
-                              ),
-                              decoration: BoxDecoration(
-                                color: selectedType == 0
-                                    ? Colors.greenAccent
-                                    : Colors.transparent,
-                                borderRadius: BorderRadius.circular(14),
-                              ),
-                              child: Text(
-                                "فیلم و سریال",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: selectedType == 0
-                                      ? Colors.black
-                                      : Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                selectedType = 1;
-                              });
-                            },
-                            child: AnimatedContainer(
-                              duration: const Duration(milliseconds: 250),
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 14,
-                              ),
-                              decoration: BoxDecoration(
-                                color: selectedType == 1
-                                    ? Colors.greenAccent
-                                    : Colors.transparent,
-                                borderRadius: BorderRadius.circular(14),
-                              ),
-                              child: Text(
-                                "کاربر",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: selectedType == 1
-                                      ? Colors.black
-                                      : Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 20),
                   Expanded(
                     child: ListView.builder(
-                      physics: const BouncingScrollPhysics(),
                       itemCount: 12,
+                      padding: const EdgeInsets.only(bottom: 16),
                       itemBuilder: (context, index) {
                         return Container(
                           margin: const EdgeInsets.symmetric(
@@ -354,30 +344,23 @@ class _SearchBottomSheetState extends State<SearchBottomSheet> {
                             vertical: 6,
                           ),
                           decoration: BoxDecoration(
-                            color: const Color(0xff1E293B),
+                            color: theme.cardColor,
                             borderRadius: BorderRadius.circular(18),
                           ),
                           child: ListTile(
-                            contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 14,
-                              vertical: 6,
-                            ),
                             leading: CircleAvatar(
-                              radius: 26,
-                              backgroundColor: Colors.greenAccent,
+                              backgroundColor: colors.primary,
                               child: Icon(
-                                selectedType == 0
-                                    ? Icons.movie_creation_rounded
-                                    : Icons.person_rounded,
-                                color: Colors.black,
+                                selectedType == 0 ? Icons.movie : Icons.person,
+                                color: Colors.white,
                               ),
                             ),
                             title: Text(
                               selectedType == 0
-                                  ? "Movie & Series ${index + 1}"
+                                  ? "Movie ${index + 1}"
                                   : "User ${index + 1}",
-                              style: const TextStyle(
-                                color: Colors.white,
+                              style: TextStyle(
+                                color: theme.textTheme.bodyLarge?.color,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -385,13 +368,13 @@ class _SearchBottomSheetState extends State<SearchBottomSheet> {
                               selectedType == 0
                                   ? "IMDB • HD • Netflix"
                                   : "@username_${index + 1}",
-                              style: const TextStyle(
-                                color: Colors.white54,
+                              style: TextStyle(
+                                color: theme.textTheme.bodyMedium?.color,
                               ),
                             ),
-                            trailing: const Icon(
+                            trailing: Icon(
                               Icons.arrow_back_ios_new_rounded,
-                              color: Colors.greenAccent,
+                              color: colors.primary,
                               size: 18,
                             ),
                           ),
