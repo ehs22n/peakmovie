@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
       description:
           'یک سریال جنایی پرتنش با داستانی چندلایه درباره فساد و عدالت در یک شهر مرزی.',
       posterUrl:
-          'https://zardfilm.in/wp-content/uploads/2026/03/Rooster-2026-series-2-250x368.webp',
+          'https://melofilm.ir/storage/assets/series/993/images/oe6Ovz6zlWEgwUs3kneLjbOsNSrwq1w1a2xquxQq_200.jpeg',
       rating: 8.1,
       year: '2026',
       genre: 'جنایی، درام',
@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
       description:
           'ماموری مخفی در تاریکی شب برای نجات یک پرونده ملی وارد بازی خطرناکی می‌شود.',
       posterUrl:
-          'https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=1200&auto=format&fit=crop',
+          'https://melofilm.ir/storage/assets/series/1183/images/CCiupXSwvLtP0xxHxoTmk8kiqYhnVL89ZkxQsoEQ_200.jpeg',
       rating: 7.8,
       year: '2025',
       genre: 'اکشن، هیجان‌انگیز',
@@ -59,14 +59,14 @@ class _HomePageState extends State<HomePage> {
       summary:
           'طبق گزارش رسمی، مراحل تولید فصل جدید آغاز شده و بازیگران اصلی به پروژه بازگشته‌اند.',
       imageUrl:
-          'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=1200&auto=format&fit=crop',
+          'https://melofilm.ir/storage/assets/movies/4125/images/mykWH9gyWlOtiS5VQBqBZkDRvoxSkUfHYC2qMPjs_1500.jpeg',
     ),
     HomeNewsItem(
       title: 'رکورد فروش افتتاحیه برای یک فیلم اکشن',
       summary:
           'این فیلم در آخر هفته اول اکران توانست رکورد فروش داخلی را جابه‌جا کند و نقدهای مثبتی بگیرد.',
       imageUrl:
-          'https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=1200&auto=format&fit=crop',
+          'https://melofilm.ir/storage/assets/movies/4129/images/W5wd6NE45Uzfs2WdtwiKSrOnK4xZqQxKiFjcD1hX_1500.jpeg',
     ),
   ];
 

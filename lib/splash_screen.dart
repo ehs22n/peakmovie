@@ -146,7 +146,7 @@ class _SplashScreenState extends State<SplashScreen>
                       const SizedBox(width: 6),
 
                       Text(
-                        "Powered by CiphetUnit",
+                        "Powered by CipherUnit",
                         style: TextStyle(
                           fontSize: 13,
                           color: theme.textTheme.bodySmall?.color,
