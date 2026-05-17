@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:peakmovie/main_layout.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
+import 'widgets/logo.dart';
+import 'widgets/version.dart';
 import 'color/theme/app_colors.dart';
+import 'widgets/contributor.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -169,6 +171,109 @@ class _HomePageState extends State<HomePage> {
               buildMovieRow("پیشنهاد ویژه", context),
               const SizedBox(height: 30),
 
+              
+
+              Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const CipherUnitImage(
+                          width: 20,
+                          height: 20,
+                        ),
+
+                        const SizedBox(width: 6),
+
+                        const PeakMovieImage(
+                          width: 20,
+                          height: 20,
+                        ),
+                        
+
+                      ],
+                    ),
+
+                    
+
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+
+                        const AppVersion(),
+
+                      ],
+                    ),
+
+                  ],
+                ),
+              ),
+              
+
+              // ---------- Contributors ----------
+              Center(
+                child: Column(
+                  children: [
+
+                    const SizedBox(height: 10),
+
+                    Text(
+                      "مشارکت‌کنندگان پروژه",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        color: textColor,
+                      ),
+                    ),
+
+                    const SizedBox(height: 10),
+
+                    Wrap(
+                      alignment: WrapAlignment.center,
+                      spacing: 10,
+                      runSpacing: 6,
+                      children: [
+
+                        ContributorChip(
+                          contributor: Contributor(
+                            name: "EHSAN",
+                            username: "@ehsan_dev",
+                            role: "Developer",
+                            social: "t.me/ehsan",
+                          ),
+                        ),
+
+                        ContributorChip(
+                          contributor: Contributor(
+                            name: "Ali",
+                            username: "@ali_admin",
+                            role: "Admin",
+                            social: "instagram.com/ali",
+                          ),
+                        ),
+
+                      ],
+                    ),
+
+                    const SizedBox(height: 15),
+
+                  ],
+                ),
+              ),
+
+
+                            
+                          
+                          
+
+            const SizedBox(height: 20)
+
+
             ],
           ),
         ),
@@ -316,6 +421,8 @@ class _HomePageState extends State<HomePage> {
                     ),
 
                     const SizedBox(height: 8),
+                    
+                    
 
                     Text(
                       "Movie ${index + 1}",
@@ -327,15 +434,25 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ],
+                  
                 ),
+                
+                
               )
                   .animate(delay: (index * 70).ms)
-                  .fade(duration: 300.ms)
-                  .slideX(begin: 0.2, end: 0);
+                  .fade(duration: 250.ms)
+                  .slideX(begin: 0.15, end: 0);
             },
           ),
         ),
       ],
+      
     );
+    
   }
+  
 }
+
+
+
+

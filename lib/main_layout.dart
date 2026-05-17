@@ -1,7 +1,11 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:peakmovie/modal/dialog.dart';
 import 'setting_page.dart';
+import 'widgets/logo.dart';
+import 'widgets/version.dart';
+import 'home_page.dart';
 
 class MainLayout extends StatelessWidget {
   final Widget child;
@@ -35,10 +39,11 @@ class MainLayout extends StatelessWidget {
               automaticallyImplyLeading: false,
               title: Row(
                 children: [
-                  Image.asset(
+                   Image.asset(
                     "assets/images/logo.png",
                     width: 38,
                   ),
+
                   const SizedBox(width: 10),
                   Text(
                     "پیک مووی",
@@ -49,8 +54,11 @@ class MainLayout extends StatelessWidget {
                     ),
                   ),
                 ],
+                
               ),
+              
               actions: [
+                
                 Builder(
                   builder: (context) {
                     return IconButton(
@@ -82,16 +90,16 @@ class MainLayout extends StatelessWidget {
                       const SizedBox(height: 20),
 
                       // ---------- Header ----------
-                      CircleAvatar(
-                        radius: 42,
-                        backgroundColor: colors.primary,
-                        child: Image.asset(
+              
+            
+                        Image.asset(
                           "assets/images/logo.png",
                           width: 45,
                         ),
-                      ),
+                    
 
                       const SizedBox(height: 16),
+                      
 
                       Text(
                         "پیک مووی",
@@ -101,14 +109,57 @@ class MainLayout extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                      // ---------- Divider ----------
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Divider(
+                          color: theme.dividerColor.withOpacity(0.3),
+                          thickness: 1,
+                        ),
+                      ),
 
                       const SizedBox(height: 30),
 
                       // ---------- Items ----------
-                      buildDrawerItem(context, Icons.home_rounded, "خانه"),
-                      buildDrawerItem(context, Icons.movie_creation_outlined, "فیلم و سریال"),
-                      buildDrawerItem(context, Icons.favorite_border, "علاقه‌مندی‌ها"),
-                      buildDrawerItem(context, Icons.person_outline_rounded, "پروفایل"),
+                      buildDrawerItem(
+                        context, 
+                        Icons.person, 
+                        "پروفایل",
+                        onTap: () {
+                          AppDialog.info(
+                            context,
+                            title: "درحال توسعه",
+                            message: "صفحه پروفایل هنوز درحال توسعه است",
+                          );
+                        },
+
+                        ),
+                      buildDrawerItem(
+                        context,
+                        Icons.movie_creation_outlined,
+                        "فیلم و سریال",
+                        onTap: () {
+                          AppDialog.info(
+                            context,
+                            title: "درحال توسعه",
+                            message: "صفحه فیلم و سریال هنوز درحال توسعه است",
+                          );
+                        },
+                        
+                        ),
+                      buildDrawerItem(
+                        context,
+                         Icons.favorite_border,
+                          "علاقه‌مندی‌ها",
+                          onTap: () {
+                          AppDialog.info(
+                            context,
+                            title: "درحال توسعه",
+                            message: "صفحه علاقه مندی ها هنوز درحال توسعه است",
+                          );
+                        },
+                          ),
+                      
 
                       buildDrawerItem(
                         context,
@@ -142,21 +193,11 @@ class MainLayout extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              "نسخه برنامه 1.0.0",
-                              style: TextStyle(
-                                color: theme.textTheme.bodyMedium?.color,
-                                fontSize: 13,
-                                fontWeight: FontWeight.w500,
-                              ),
-
-                            ),
-                            Image.asset(
-                              "assets/images/cipher_unit.png",
+                            const AppVersion(),
+                            const CipherUnitImage(
                               width: 28,
                               height: 28,
-                            ),
-
+                              ),
                           ],
                         ),
                       ),
@@ -191,6 +232,26 @@ class MainLayout extends StatelessWidget {
                     },
                   );
                   return;
+                }
+                else if (index == 0) {
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const HomePage(),
+                    ),
+                  );
+
+                } 
+
+                else{
+                  
+                    AppDialog.info(
+                      context,
+                      title: "درحال توسعه",
+                      message: "این صفحه هنوز در حال توسعه است",
+                    );
+                    
                 }
 
                 onTap(index);

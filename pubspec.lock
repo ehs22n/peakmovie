@@ -25,6 +25,14 @@ packages:
       url: "https://mirror-flutter.runflare.com"
     source: hosted
     version: "2.13.1"
+  awesome_dialog:
+    dependency: "direct main"
+    description:
+      name: awesome_dialog
+      sha256: "4c5821a0a637ceee022084e78c1b8237dd4b8bfca4dd24ac2484662a56707338"
+      url: "https://mirror-flutter.runflare.com"
+    source: hosted
+    version: "3.3.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -280,6 +288,14 @@ packages:
       url: "https://mirror-flutter.runflare.com"
     source: hosted
     version: "2.1.3"
+  graphs:
+    dependency: transitive
+    description:
+      name: graphs
+      sha256: "741bbf84165310a68ff28fe9e727332eef1407342fca52759cb21ad8177bb8d0"
+      url: "https://mirror-flutter.runflare.com"
+    source: hosted
+    version: "2.3.2"
   hooks:
     dependency: transitive
     description:
@@ -552,6 +568,22 @@ packages:
       url: "https://mirror-flutter.runflare.com"
     source: hosted
     version: "0.6.0"
+  rive:
+    dependency: transitive
+    description:
+      name: rive
+      sha256: "4030119faa24050d0f5a49646e53f059121464e62662698c42c3d5886fe0ab27"
+      url: "https://mirror-flutter.runflare.com"
+    source: hosted
+    version: "0.14.6"
+  rive_native:
+    dependency: transitive
+    description:
+      name: rive_native
+      sha256: "05f59b4250410a634a3e4e8d07f97b2616ce20c24451b02ff814fb61135172bd"
+      url: "https://mirror-flutter.runflare.com"
+    source: hosted
+    version: "0.1.6"
   rxdart:
     dependency: transitive
     description:
